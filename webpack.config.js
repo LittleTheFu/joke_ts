@@ -2,7 +2,7 @@ module.exports = {
     entry: './src/app.tsx',
     output: {
       path: __dirname + '/public',
-      filename: 'app.js'
+      filename: 'build/app.js'
     },
     resolve: {
       extensions: ['.ts', '.tsx', '.js']
