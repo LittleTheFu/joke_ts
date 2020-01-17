@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-const color = "blue";
+let color = "blue";
 // const good = 3;
 ReactDOM.render(
     <div>{color}</div>,
