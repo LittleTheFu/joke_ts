@@ -1,7 +1,7 @@
 {
   "name": "proj",
   "version": "1.0.0",
-  "description": "",
+  "description": "TRY TYPESCRIT",
   "main": "index.js",
   "scripts": {
     "build": "webpack -p",
@@ -20,5 +20,12 @@
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.3",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
+    "@babel/preset-env": "^7.8.3",
+    "@babel/preset-typescript": "^7.8.3"
   }
 }
