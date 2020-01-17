@@ -1,11 +1,15 @@
 {
   "name": "proj",
   "version": "1.0.0",
+  "private": true,
   "description": "TRY TYPESCRIT",
   "main": "index.js",
   "scripts": {
     "build": "webpack -p",
-    "start": "webpack-dev-server -d --content-base ./public"
+    "start": "webpack-dev-server -d --content-base ./public",
+    "babel-version": "babel --version",
+    "babel-make": "babel ./src --out-dir lib --extensions \".ts,.tsx\"",
+    "babel-mk": "babel ./src --out-dir lib"
   },
   "keywords": [],
   "author": "",
@@ -22,10 +26,12 @@
     "webpack-dev-server": "^3.10.1"
   },
   "devDependencies": {
+    "@babel/cli": "^7.8.3",
     "@babel/core": "^7.8.3",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
     "@babel/preset-env": "^7.8.3",
-    "@babel/preset-typescript": "^7.8.3"
+    "@babel/preset-typescript": "^7.8.3",
+    "babel-cli": "^6.26.0"
   }
 }
