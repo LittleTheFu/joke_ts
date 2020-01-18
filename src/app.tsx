@@ -5,10 +5,12 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import JokeApp from './jokeApp';
 
 const color = 'blue';
 ReactDOM.render(
     <div>
+        <JokeApp />
         {color}
         <Button variant="contained" color="primary">
             你好，世界
