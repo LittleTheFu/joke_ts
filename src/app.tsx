@@ -6,7 +6,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-const color = 'blue';
+const colos = 'blue';
 ReactDOM.render(
     <div>
         {color}
