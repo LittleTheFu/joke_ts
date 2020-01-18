@@ -50,7 +50,7 @@
     }
   },
   "lint-staged": {
-    "src/*.(ts|tsx)": [
+    "src/**/*.(ts|tsx)": [
       "npm run --silent lint:r:fix",
       "git add"
     ]
