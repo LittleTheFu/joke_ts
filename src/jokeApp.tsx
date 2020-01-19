@@ -5,10 +5,10 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-const JokeApp: React.FC<{ name: string; color: string }> = ({ name, color }) => {
+const JokeApp: React.FC<{ name: string; word: string }> = ({ name, word }) => {
     return (
         <div>
-            {name} with {color}
+            {name} with {word}
             <Button variant="contained" color="primary">
                 你好，世界
             </Button>
