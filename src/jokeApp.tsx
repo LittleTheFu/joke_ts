@@ -1,7 +1,18 @@
 import * as React from 'react';
+// import * as PropTypes from 'prop-types';
 
-const JokeApp: React.FC = () => {
-    return <div>message</div>;
+// export interface Props {
+//     name: string;
+// }
+
+// type Props = { name: string };
+
+const JokeApp: React.FC<{ name: string }> = ({ name }) => {
+    return <div>{name}</div>;
 };
+
+// JokeApp.propTypes = {
+//     name: PropTypes.string,
+// };
 
 export default JokeApp;
