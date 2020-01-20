@@ -1,5 +1,7 @@
 import * as React from 'react';
 import Button from '@material-ui/core/Button';
+import { useState, useEffect } from 'react';
+
 // import FormGroup from '@material-ui/core/FormGroup';
 // import FormControlLabel from '@material-ui/core/FormControlLabel';
 // import Switch from '@material-ui/core/Switch';
@@ -46,10 +48,17 @@ import Button from '@material-ui/core/Button';
 // };
 
 const JokeApp: React.FC = () => {
+    const [joke, setJoke] = useState('default joke');
+
+    useEffect(() => {
+        setJoke('a joke');
+    });
+
     return (
         <div>
+            <h1>{joke}</h1>
             <Button variant="contained" color="primary">
-                joke
+                fetch
             </Button>
         </div>
     );
