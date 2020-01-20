@@ -1,6 +1,8 @@
 import * as React from 'react';
 import Button from '@material-ui/core/Button';
-import { useState, useEffect, useCallback } from 'react';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+import { useState } from 'react';
 
 // import FormGroup from '@material-ui/core/FormGroup';
 // import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -69,17 +71,22 @@ function api<T>(url: string, info: object): Promise<T> {
 
 const JokeApp: React.FC = () => {
     const [joke, setJoke] = useState('default joke');
+    const [isLoading, setLoadding] = useState(false);
 
-    const fetchData = useCallback(() => {
+    const fetchData = (): void => {
+        if (isLoading) return;
+        setLoadding(true);
         api<{ id: string; content: string }>(jokeUrl, info)
             .then(({ id, content }) => {
                 console.log(id, content);
                 setJoke(content);
+                setLoadding(false);
             })
             .catch(error => {
                 console.log(error);
+                setLoadding(false);
             });
-    }, []);
+    };
 
     return (
         <div>
@@ -87,6 +94,7 @@ const JokeApp: React.FC = () => {
             <Button variant="contained" color="primary" onClick={fetchData}>
                 fetch
             </Button>
+            {isLoading ? <CircularProgress color="secondary" /> : null}
         </div>
     );
 };
