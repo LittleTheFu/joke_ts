@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Button from '@material-ui/core/Button';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 // import FormGroup from '@material-ui/core/FormGroup';
 // import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -70,7 +70,7 @@ function api<T>(url: string, info: object): Promise<T> {
 const JokeApp: React.FC = () => {
     const [joke, setJoke] = useState('default joke');
 
-    useEffect(() => {
+    const fetchData = useCallback(() => {
         api<{ id: string; content: string }>(jokeUrl, info)
             .then(({ id, content }) => {
                 console.log(id, content);
@@ -84,13 +84,7 @@ const JokeApp: React.FC = () => {
     return (
         <div>
             <h1>{joke}</h1>
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={(): void => {
-                    console.log('onClick');
-                }}
-            >
+            <Button variant="contained" color="primary" onClick={fetchData}>
                 fetch
             </Button>
         </div>
