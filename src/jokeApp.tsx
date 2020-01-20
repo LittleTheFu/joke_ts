@@ -5,7 +5,12 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-const JokeApp: React.FC<{ name: string; word: string }> = ({ name, word }) => {
+interface Props {
+    name: string;
+    word: string;
+}
+
+const JokeApp = ({ name, word }: Props): JSX.Element => {
     return (
         <div>
             {name} with {word}
@@ -21,5 +26,23 @@ const JokeApp: React.FC<{ name: string; word: string }> = ({ name, word }) => {
         </div>
     );
 };
+
+//####################################################################################################
+// const JokeApp: React.FC<{ name: string; word: string }> = ({ name, word }) => {
+//     return (
+//         <div>
+//             {name} with {word}
+//             <Button variant="contained" color="primary">
+//                 你好，世界
+//             </Button>
+//             <FormGroup>
+//                 <FormControlLabel control={<Switch size="small" />} label="Small" />
+//                 <FormControlLabel control={<Switch />} label="Normal" />
+//             </FormGroup>
+//             <CircularProgress />
+//             <CircularProgress color="secondary" />
+//         </div>
+//     );
+// };
 
 export default JokeApp;
