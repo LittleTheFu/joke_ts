@@ -10,7 +10,7 @@ import JokeApp from './jokeApp';
 const color = 'blue';
 ReactDOM.render(
     <div>
-        <JokeApp name="Jake" word="bang" />
+        <JokeApp name="Jake" />
         {color}
         <Button variant="contained" color="primary">
             你好，世界
