@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
+import Grid from '@material-ui/core/Grid';
 import { useState } from 'react';
 
 // import FormGroup from '@material-ui/core/FormGroup';
@@ -90,11 +90,12 @@ const JokeApp: React.FC = () => {
 
     return (
         <div>
-            <h1>{joke}</h1>
-            <Button variant="contained" color="primary" onClick={fetchData}>
-                fetch
-            </Button>
-            {isLoading ? <CircularProgress color="secondary" /> : null}
+            <Grid container direction="column" justify="center" alignItems="center">
+                {isLoading ? <CircularProgress color="secondary" /> : <h1>{joke}</h1>}
+                <Button variant="contained" color="primary" onClick={fetchData}>
+                    fetch
+                </Button>
+            </Grid>
         </div>
     );
 };
