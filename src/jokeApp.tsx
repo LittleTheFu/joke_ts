@@ -47,6 +47,16 @@ import { useState, useEffect } from 'react';
 //     );
 // };
 
+const info = {
+    method: 'GET',
+    headers: {
+        'x-rapidapi-host': 'joke3.p.rapidapi.com',
+        'x-rapidapi-key': 'fc5476beb4mshc57aa5e3ed24365p114d83jsn1e6a83699ef6',
+    },
+};
+
+const jokeUrl = 'https://joke3.p.rapidapi.com/v1/joke';
+
 function api<T>(url: string, info: object): Promise<T> {
     return fetch(url, info).then(response => {
         if (!response.ok) {
@@ -61,16 +71,7 @@ const JokeApp: React.FC = () => {
     const [joke, setJoke] = useState('default joke');
 
     useEffect(() => {
-        api<{ id: string; content: string; nsfw: boolean; upvotes: number; downvotes: number }>(
-            'https://joke3.p.rapidapi.com/v1/joke',
-            {
-                method: 'GET',
-                headers: {
-                    'x-rapidapi-host': 'joke3.p.rapidapi.com',
-                    'x-rapidapi-key': 'fc5476beb4mshc57aa5e3ed24365p114d83jsn1e6a83699ef6',
-                },
-            },
-        )
+        api<{ id: string; content: string }>(jokeUrl, info)
             .then(({ id, content }) => {
                 console.log(id, content);
                 setJoke(content);
@@ -78,13 +79,18 @@ const JokeApp: React.FC = () => {
             .catch(error => {
                 console.log(error);
             });
-        console.log('eff');
     }, []);
 
     return (
         <div>
             <h1>{joke}</h1>
-            <Button variant="contained" color="primary">
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={(): void => {
+                    console.log('onClick');
+                }}
+            >
                 fetch
             </Button>
         </div>
