@@ -47,12 +47,60 @@ import { useState, useEffect } from 'react';
 //     );
 // };
 
+const createFetchData = (id = '') => ({
+    url: `https://joke3.p.rapidapi.com/v1/joke/${id}`,
+    fetchData: {
+        method: 'GET',
+        headers: {
+            'x-rapidapi-host': 'joke3.p.rapidapi.com',
+            'x-rapidapi-key': 'fc5476beb4mshc57aa5e3ed24365p114d83jsn1e6a83699ef6',
+        },
+    },
+});
+const rawFetchJokeItem = (): Promise<any> =>
+    new Promise((resolve, reject) => {
+        fetch('https://joke3.p.rapidapi.com/v1/joke', {
+            method: 'GET',
+            headers: {
+                'x-rapidapi-host': 'joke3.p.rapidapi.com',
+                'x-rapidapi-key': 'fc5476beb4mshc57aa5e3ed24365p114d83jsn1e6a83699ef6',
+            },
+        });
+    });
+
+function api<T>(url: string, info: object): Promise<T> {
+    return fetch(url, info).then(response => {
+        if (!response.ok) {
+            console.log(response);
+            throw new Error(response.statusText);
+        }
+        return response.json().then(data => data as T);
+    });
+}
+
 const JokeApp: React.FC = () => {
     const [joke, setJoke] = useState('default joke');
 
     useEffect(() => {
-        setJoke('a joke');
-    });
+        api<{ id: string; content: string; nsfw: boolean; upvotes: number; downvotes: number }>(
+            'https://joke3.p.rapidapi.com/v1/joke',
+            {
+                method: 'GET',
+                headers: {
+                    'x-rapidapi-host': 'joke3.p.rapidapi.com',
+                    'x-rapidapi-key': 'fc5476beb4mshc57aa5e3ed24365p114d83jsn1e6a83699ef6',
+                },
+            },
+        )
+            .then(({ id, content }) => {
+                console.log(id, content);
+                setJoke(content);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        console.log('eff');
+    }, []);
 
     return (
         <div>
