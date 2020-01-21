@@ -2,7 +2,8 @@ import * as React from 'react';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -72,6 +73,9 @@ const useStyles = makeStyles({
         height: 100,
         color: 'red',
     },
+    thumbers: {
+        color: 'green',
+    },
 });
 
 function api<T>(url: string, info: object): Promise<T> {
@@ -121,10 +125,10 @@ const JokeApp: React.FC = () => {
                     )}
                 </Grid>
                 <Grid item xs={6} sm={3}>
-                    upvotes:{upvotes}
+                    <ThumbUpIcon className={classes.thumbers} />:{upvotes}
                 </Grid>
                 <Grid item xs={6} sm={3}>
-                    downvotes:{downvotes}
+                    <ThumbDownIcon className={classes.thumbers} />:{downvotes}
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <Button variant="contained" color="primary" onClick={fetchData}>
