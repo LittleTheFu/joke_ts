@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import Tooltip from '@material-ui/core/Tooltip';
+import Snackbar from '@material-ui/core/Snackbar';
 import { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -94,9 +95,10 @@ const JokeApp: React.FC = () => {
     const [isLoading, setLoadding] = useState(false);
     const [upvotes, setUpvotes] = useState(-1);
     const [downvotes, setDownvotes] = useState(-1);
+    const [snackbarOpen, setSnackBarOpen] = React.useState(false);
 
     const classes = useStyles({});
-    console.log(classes);
+    // console.log(classes);
 
     const fetchData = (): void => {
         if (isLoading) return;
@@ -119,6 +121,14 @@ const JokeApp: React.FC = () => {
         console.log('hover thubmers');
     };
 
+    const clickThumbers = (): void => {
+        setSnackBarOpen(true);
+    };
+
+    const handleClose = (): void => {
+        setSnackBarOpen(false);
+    };
+
     return (
         <div>
             <Grid container justify="center" alignItems="center" className={classes.root}>
@@ -131,13 +141,21 @@ const JokeApp: React.FC = () => {
                 </Grid>
                 <Grid item xs={6} sm={3}>
                     <Tooltip title="Voteup">
-                        <ThumbUpIcon onMouseEnter={hoverThumbers} className={classes.thumbers} />
+                        <ThumbUpIcon
+                            onClick={clickThumbers}
+                            onMouseEnter={hoverThumbers}
+                            className={classes.thumbers}
+                        />
                     </Tooltip>
                     :{upvotes}
                 </Grid>
                 <Grid item xs={6} sm={3}>
                     <Tooltip title="Votedown">
-                        <ThumbDownIcon onMouseEnter={hoverThumbers} className={classes.thumbers} />
+                        <ThumbDownIcon
+                            onClick={clickThumbers}
+                            onMouseEnter={hoverThumbers}
+                            className={classes.thumbers}
+                        />
                     </Tooltip>
                     :{downvotes}
                 </Grid>
@@ -147,6 +165,12 @@ const JokeApp: React.FC = () => {
                     </Button>
                 </Grid>
             </Grid>
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={2000}
+                onClose={handleClose}
+                message="Note archived"
+            ></Snackbar>
         </div>
     );
 };
