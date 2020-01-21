@@ -2,6 +2,7 @@ import * as React from 'react';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 import { useState } from 'react';
 
 // import FormGroup from '@material-ui/core/FormGroup';
@@ -91,7 +92,7 @@ const JokeApp: React.FC = () => {
     return (
         <div>
             <Grid container direction="column" justify="center" alignItems="center">
-                {isLoading ? <CircularProgress color="secondary" /> : <h1>{joke}</h1>}
+                {isLoading ? <CircularProgress color="secondary" size={100} /> : <Box height={100}>{joke}</Box>}
                 <Button variant="contained" color="primary" onClick={fetchData}>
                     fetch
                 </Button>
