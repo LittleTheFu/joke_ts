@@ -62,11 +62,16 @@ const info = {
 const jokeUrl = 'https://joke3.p.rapidapi.com/v1/joke';
 
 const useStyles = makeStyles({
+    root: {
+        height: 300,
+    },
     icon: {
         size: 800,
     },
     box: {
-        height: 300,
+        height: 0,
+        color: 'red',
+        textAlign: 'right',
     },
 });
 
@@ -103,15 +108,19 @@ const JokeApp: React.FC = () => {
 
     return (
         <div>
-            <Grid container direction="column" justify="center" alignItems="center">
-                {isLoading ? (
-                    <CircularProgress color="secondary" className={classes.icon} />
-                ) : (
-                    <Box className={classes.box}>{joke}</Box>
-                )}
-                <Button variant="contained" color="primary" onClick={fetchData}>
-                    fetch
-                </Button>
+            <Grid container justify="center" alignItems="center" className={classes.root}>
+                <Grid item xs={12} sm={6}>
+                    {isLoading ? (
+                        <CircularProgress color="secondary" size={80} />
+                    ) : (
+                        <Box className={classes.box}>{joke}</Box>
+                    )}
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <Button variant="contained" color="primary" onClick={fetchData}>
+                        fetch
+                    </Button>
+                </Grid>
             </Grid>
         </div>
     );
