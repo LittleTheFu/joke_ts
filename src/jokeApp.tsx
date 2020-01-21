@@ -4,6 +4,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 
 // import FormGroup from '@material-ui/core/FormGroup';
 // import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -60,6 +61,15 @@ const info = {
 
 const jokeUrl = 'https://joke3.p.rapidapi.com/v1/joke';
 
+const useStyles = makeStyles({
+    icon: {
+        size: 800,
+    },
+    box: {
+        height: 300,
+    },
+});
+
 function api<T>(url: string, info: object): Promise<T> {
     return fetch(url, info).then(response => {
         if (!response.ok) {
@@ -73,6 +83,8 @@ function api<T>(url: string, info: object): Promise<T> {
 const JokeApp: React.FC = () => {
     const [joke, setJoke] = useState('default joke');
     const [isLoading, setLoadding] = useState(false);
+    const classes = useStyles({});
+    console.log(classes);
 
     const fetchData = (): void => {
         if (isLoading) return;
@@ -92,7 +104,11 @@ const JokeApp: React.FC = () => {
     return (
         <div>
             <Grid container direction="column" justify="center" alignItems="center">
-                {isLoading ? <CircularProgress color="secondary" size={100} /> : <Box height={100}>{joke}</Box>}
+                {isLoading ? (
+                    <CircularProgress color="secondary" className={classes.icon} />
+                ) : (
+                    <Box className={classes.box}>{joke}</Box>
+                )}
                 <Button variant="contained" color="primary" onClick={fetchData}>
                     fetch
                 </Button>
