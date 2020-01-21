@@ -69,9 +69,8 @@ const useStyles = makeStyles({
         size: 800,
     },
     box: {
-        height: 0,
+        height: 100,
         color: 'red',
-        textAlign: 'right',
     },
 });
 
@@ -88,16 +87,21 @@ function api<T>(url: string, info: object): Promise<T> {
 const JokeApp: React.FC = () => {
     const [joke, setJoke] = useState('default joke');
     const [isLoading, setLoadding] = useState(false);
+    const [upvotes, setUpvotes] = useState(-1);
+    const [downvotes, setDownvotes] = useState(-1);
+
     const classes = useStyles({});
     console.log(classes);
 
     const fetchData = (): void => {
         if (isLoading) return;
         setLoadding(true);
-        api<{ id: string; content: string }>(jokeUrl, info)
-            .then(({ id, content }) => {
+        api<{ id: string; content: string; upvotes: number; downvotes: number }>(jokeUrl, info)
+            .then(({ id, content, upvotes, downvotes }) => {
                 console.log(id, content);
                 setJoke(content);
+                setUpvotes(upvotes);
+                setDownvotes(downvotes);
                 setLoadding(false);
             })
             .catch(error => {
@@ -109,12 +113,18 @@ const JokeApp: React.FC = () => {
     return (
         <div>
             <Grid container justify="center" alignItems="center" className={classes.root}>
-                <Grid item xs={12} sm={6}>
+                <Grid container item xs={12} sm={6} justify="center">
                     {isLoading ? (
                         <CircularProgress color="secondary" size={80} />
                     ) : (
-                        <Box className={classes.box}>{joke}</Box>
+                        <div className={classes.box}>{joke}</div>
                     )}
+                </Grid>
+                <Grid item xs={6} sm={3}>
+                    upvotes:{upvotes}
+                </Grid>
+                <Grid item xs={6} sm={3}>
+                    downvotes:{downvotes}
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <Button variant="contained" color="primary" onClick={fetchData}>
