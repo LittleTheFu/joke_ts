@@ -6,7 +6,7 @@ import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import Tooltip from '@material-ui/core/Tooltip';
 import Snackbar from '@material-ui/core/Snackbar';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 const info = {
@@ -84,6 +84,10 @@ const JokeApp: React.FC = () => {
     const [snackBarMsg, setSnackBarMsg] = useState('message');
 
     const classes = useStyles({});
+
+    useEffect(() => {
+        console.log('change');
+    }, [upvotes]);
 
     const fetchData = (): void => {
         if (isLoading) return;
