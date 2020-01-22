@@ -9,51 +9,6 @@ import Snackbar from '@material-ui/core/Snackbar';
 import { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-// import FormGroup from '@material-ui/core/FormGroup';
-// import FormControlLabel from '@material-ui/core/FormControlLabel';
-// import Switch from '@material-ui/core/Switch';
-// import CircularProgress from '@material-ui/core/CircularProgress';
-
-// interface Props {
-//     name: string;
-//     word?: string;
-// }
-
-// const JokeApp = ({ name, word = 'bad' }: Props): JSX.Element => {
-//     return (
-//         <div>
-//             {name} with {word}
-//             <Button variant="contained" color="primary">
-//                 你好，世界
-//             </Button>
-//             <FormGroup>
-//                 <FormControlLabel control={<Switch size="small" />} label="Small" />
-//                 <FormControlLabel control={<Switch />} label="Normal" />
-//             </FormGroup>
-//             <CircularProgress />
-//             <CircularProgress color="secondary" />
-//         </div>
-//     );
-// };
-
-//####################################################################################################
-// const JokeApp: React.FC<{ name: string; word?: string }> = ({ name, word = 'pol' }) => {
-//     return (
-//         <div>
-//             {name} with {word}
-//             <Button variant="contained" color="primary">
-//                 你好，世界
-//             </Button>
-//             <FormGroup>
-//                 <FormControlLabel control={<Switch size="small" />} label="Small" />
-//                 <FormControlLabel control={<Switch />} label="Normal" />
-//             </FormGroup>
-//             <CircularProgress />
-//             <CircularProgress color="secondary" />
-//         </div>
-//     );
-// };
-
 const info = {
     method: 'GET',
     headers: {
@@ -107,21 +62,6 @@ const createPostInfo = (): object => {
     };
 };
 
-// const createVoteData = (id, isUpvote): object => {
-//     const voteType = isUpvote ? 'upvote' : 'downvote';
-//     return {
-//         url: 'https://joke3.p.rapidapi.com/v1/joke/' + id + '/' + voteType,
-//         fetchData: {
-//             method: 'POST',
-//             headers: {
-//                 'x-rapidapi-host': 'joke3.p.rapidapi.com',
-//                 'x-rapidapi-key': 'fc5476beb4mshc57aa5e3ed24365p114d83jsn1e6a83699ef6',
-//                 'content-type': 'application/x-www-form-urlencoded',
-//             },
-//             body: {},
-//         },
-//     };
-// };
 // db09c5d9659d44448c4da0ae5d321e55
 
 const JokeApp: React.FC = () => {
@@ -134,7 +74,6 @@ const JokeApp: React.FC = () => {
     const [snackBarMsg, setSnackBarMsg] = useState('message');
 
     const classes = useStyles({});
-    // console.log(classes);
 
     const fetchData = (): void => {
         if (isLoading) return;
@@ -247,3 +186,48 @@ const JokeApp: React.FC = () => {
 };
 
 export default JokeApp;
+
+// import FormGroup from '@material-ui/core/FormGroup';
+// import FormControlLabel from '@material-ui/core/FormControlLabel';
+// import Switch from '@material-ui/core/Switch';
+// import CircularProgress from '@material-ui/core/CircularProgress';
+
+// interface Props {
+//     name: string;
+//     word?: string;
+// }
+
+// const JokeApp = ({ name, word = 'bad' }: Props): JSX.Element => {
+//     return (
+//         <div>
+//             {name} with {word}
+//             <Button variant="contained" color="primary">
+//                 你好，世界
+//             </Button>
+//             <FormGroup>
+//                 <FormControlLabel control={<Switch size="small" />} label="Small" />
+//                 <FormControlLabel control={<Switch />} label="Normal" />
+//             </FormGroup>
+//             <CircularProgress />
+//             <CircularProgress color="secondary" />
+//         </div>
+//     );
+// };
+
+//####################################################################################################
+// const JokeApp: React.FC<{ name: string; word?: string }> = ({ name, word = 'pol' }) => {
+//     return (
+//         <div>
+//             {name} with {word}
+//             <Button variant="contained" color="primary">
+//                 你好，世界
+//             </Button>
+//             <FormGroup>
+//                 <FormControlLabel control={<Switch size="small" />} label="Small" />
+//                 <FormControlLabel control={<Switch />} label="Normal" />
+//             </FormGroup>
+//             <CircularProgress />
+//             <CircularProgress color="secondary" />
+//         </div>
+//     );
+// };
