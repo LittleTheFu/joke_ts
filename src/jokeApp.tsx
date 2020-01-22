@@ -35,14 +35,24 @@ const useStyles = makeStyles({
     },
 });
 
-function api<T>(url: string, info: object): Promise<T> {
-    return fetch(url, info).then(response => {
-        if (!response.ok) {
-            console.log(response);
-            throw new Error(response.statusText);
-        }
-        return response.json().then(data => data as T);
-    });
+// function api<T>(url: string, info: object): Promise<T> {
+//     return fetch(url, info).then(response => {
+//         if (!response.ok) {
+//             console.log(response);
+//             throw new Error(response.statusText);
+//         }
+//         return response.json().then(data => data as T);
+//     });
+// }
+
+async function api<T>(url: string, info: object): Promise<T> {
+    const response = await fetch(url, info);
+    if (!response.ok) {
+        console.log(response);
+        throw new Error(response.statusText);
+    }
+    const data = await response.json();
+    return data as T;
 }
 
 const createVoteUrl = (id: number, isUpvote: boolean): string => {
