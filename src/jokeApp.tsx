@@ -89,48 +89,63 @@ const JokeApp: React.FC = () => {
         console.log('change');
     }, [upvotes]);
 
-    const fetchData = (): void => {
+    const rawFetch = (
+        url: string,
+        info: object,
+        resolve: (arg0: string, arg1: string, arg2: number, arg3: number) => void,
+        reject: (arg0: object) => void,
+        guard?: () => boolean,
+    ): void => {
+        if (guard) {
+            if (guard()) return;
+        }
         if (isLoading) return;
         setLoadding(true);
-        api<{ id: string; content: string; upvotes: number; downvotes: number }>(jokeUrl, info)
+        api<{ id: string; content: string; upvotes: number; downvotes: number }>(url, info)
             .then(({ id, content, upvotes, downvotes }) => {
-                console.log(id, content);
-                setId(id);
-                setJoke(content);
-                setUpvotes(upvotes);
-                setDownvotes(downvotes);
+                resolve(id, content, upvotes, downvotes);
                 setLoadding(false);
             })
             .catch(error => {
-                console.log(error);
+                reject(error);
                 setLoadding(false);
             });
     };
 
+    const setJokeInfo = (id: string, content: string, upvotes: number, downvotes: number): void => {
+        setId(id);
+        setJoke(content);
+        setUpvotes(upvotes);
+        setDownvotes(downvotes);
+    };
+
+    const afterFetchJokeSuccess = (id: string, content: string, upvotes: number, downvotes: number): void => {
+        setJokeInfo(id, content, upvotes, downvotes);
+    };
+
+    const fetchData = (): void => {
+        rawFetch(jokeUrl, info, afterFetchJokeSuccess, console.log);
+    };
+
+    const isIdNull = (): boolean => {
+        return id === null;
+    };
+
+    const afterVoteJokeSuccess = (id: string, content: string, upvotes: number, downvotes: number): void => {
+        setJokeInfo(id, content, upvotes, downvotes);
+        setSnackBarOpen(true);
+        setSnackBarMsg('vote succeed');
+    };
+
+    const afterVoteJokeFail = (error: object): void => {
+        console.log(error);
+        setLoadding(false);
+        setSnackBarOpen(true);
+        setSnackBarMsg('vote failed');
+    };
+
     const vote = (isUpvote: boolean): void => {
-        if (id === null) return;
-        if (isLoading) return;
-        setLoadding(true);
-        api<{ id: string; content: string; upvotes: number; downvotes: number }>(
-            createVoteUrl(id, isUpvote),
-            createPostInfo(),
-        )
-            .then(({ id, content, upvotes, downvotes }) => {
-                console.log(id, content);
-                setId(id);
-                setJoke(content);
-                setUpvotes(upvotes);
-                setDownvotes(downvotes);
-                setLoadding(false);
-                setSnackBarOpen(true);
-                setSnackBarMsg('vote succeed');
-            })
-            .catch(error => {
-                console.log(error);
-                setLoadding(false);
-                setSnackBarOpen(true);
-                setSnackBarMsg('vote failed');
-            });
+        rawFetch(createVoteUrl(id, isUpvote), createPostInfo(), afterVoteJokeSuccess, afterVoteJokeFail, isIdNull);
     };
 
     const hoverThumbers = (): void => {
