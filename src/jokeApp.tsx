@@ -90,12 +90,48 @@ function api<T>(url: string, info: object): Promise<T> {
     });
 }
 
+const createVoteUrl = (id: number, isUpvote: boolean): string => {
+    const voteType = isUpvote ? 'upvote' : 'downvote';
+    return 'https://joke3.p.rapidapi.com/v1/joke/' + id + '/' + voteType;
+};
+
+const createPostInfo = (): object => {
+    return {
+        method: 'POST',
+        headers: {
+            'x-rapidapi-host': 'joke3.p.rapidapi.com',
+            'x-rapidapi-key': 'fc5476beb4mshc57aa5e3ed24365p114d83jsn1e6a83699ef6',
+            'content-type': 'application/x-www-form-urlencoded',
+        },
+        body: {},
+    };
+};
+
+// const createVoteData = (id, isUpvote): object => {
+//     const voteType = isUpvote ? 'upvote' : 'downvote';
+//     return {
+//         url: 'https://joke3.p.rapidapi.com/v1/joke/' + id + '/' + voteType,
+//         fetchData: {
+//             method: 'POST',
+//             headers: {
+//                 'x-rapidapi-host': 'joke3.p.rapidapi.com',
+//                 'x-rapidapi-key': 'fc5476beb4mshc57aa5e3ed24365p114d83jsn1e6a83699ef6',
+//                 'content-type': 'application/x-www-form-urlencoded',
+//             },
+//             body: {},
+//         },
+//     };
+// };
+// db09c5d9659d44448c4da0ae5d321e55
+
 const JokeApp: React.FC = () => {
     const [joke, setJoke] = useState('default joke');
     const [isLoading, setLoadding] = useState(false);
     const [upvotes, setUpvotes] = useState(-1);
     const [downvotes, setDownvotes] = useState(-1);
     const [snackbarOpen, setSnackBarOpen] = React.useState(false);
+    const [id, setId] = useState(null);
+    const [snackBarMsg, setSnackBarMsg] = useState('message');
 
     const classes = useStyles({});
     // console.log(classes);
@@ -106,6 +142,7 @@ const JokeApp: React.FC = () => {
         api<{ id: string; content: string; upvotes: number; downvotes: number }>(jokeUrl, info)
             .then(({ id, content, upvotes, downvotes }) => {
                 console.log(id, content);
+                setId(id);
                 setJoke(content);
                 setUpvotes(upvotes);
                 setDownvotes(downvotes);
@@ -117,12 +154,42 @@ const JokeApp: React.FC = () => {
             });
     };
 
+    const vote = (isUpvote: boolean): void => {
+        if (id === null) return;
+        if (isLoading) return;
+        setLoadding(true);
+        api<{ id: string; content: string; upvotes: number; downvotes: number }>(
+            createVoteUrl(id, isUpvote),
+            createPostInfo(),
+        )
+            .then(({ id, content, upvotes, downvotes }) => {
+                console.log(id, content);
+                setId(id);
+                setJoke(content);
+                setUpvotes(upvotes);
+                setDownvotes(downvotes);
+                setLoadding(false);
+                setSnackBarOpen(true);
+                setSnackBarMsg('vote succeed');
+            })
+            .catch(error => {
+                console.log(error);
+                setLoadding(false);
+                setSnackBarOpen(true);
+                setSnackBarMsg('vote failed');
+            });
+    };
+
     const hoverThumbers = (): void => {
         console.log('hover thubmers');
     };
 
-    const clickThumbers = (): void => {
-        setSnackBarOpen(true);
+    const clickThumberUp = (): void => {
+        vote(true);
+    };
+
+    const clickThumberDown = (): void => {
+        vote(false);
     };
 
     const handleClose = (): void => {
@@ -136,13 +203,17 @@ const JokeApp: React.FC = () => {
                     {isLoading ? (
                         <CircularProgress color="secondary" size={80} />
                     ) : (
-                        <div className={classes.box}>{joke}</div>
+                        <div className={classes.box}>
+                            {id === null ? null : id}
+                            <br />
+                            {joke}
+                        </div>
                     )}
                 </Grid>
                 <Grid item xs={6} sm={3}>
                     <Tooltip title="Voteup">
                         <ThumbUpIcon
-                            onClick={clickThumbers}
+                            onClick={clickThumberUp}
                             onMouseEnter={hoverThumbers}
                             className={classes.thumbers}
                         />
@@ -152,7 +223,7 @@ const JokeApp: React.FC = () => {
                 <Grid item xs={6} sm={3}>
                     <Tooltip title="Votedown">
                         <ThumbDownIcon
-                            onClick={clickThumbers}
+                            onClick={clickThumberDown}
                             onMouseEnter={hoverThumbers}
                             className={classes.thumbers}
                         />
@@ -169,7 +240,7 @@ const JokeApp: React.FC = () => {
                 open={snackbarOpen}
                 autoHideDuration={2000}
                 onClose={handleClose}
-                message="Note archived"
+                message={snackBarMsg}
             ></Snackbar>
         </div>
     );
