@@ -8,16 +8,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Snackbar from '@material-ui/core/Snackbar';
 import { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-
-const info = {
-    method: 'GET',
-    headers: {
-        'x-rapidapi-host': 'joke3.p.rapidapi.com',
-        'x-rapidapi-key': 'fc5476beb4mshc57aa5e3ed24365p114d83jsn1e6a83699ef6',
-    },
-};
-
-const jokeUrl = 'https://joke3.p.rapidapi.com/v1/joke';
+import { getRandomJoke, voteJoke } from './service';
 
 const useStyles = makeStyles({
     root: {
@@ -34,43 +25,6 @@ const useStyles = makeStyles({
         color: 'green',
     },
 });
-
-// function api<T>(url: string, info: object): Promise<T> {
-//     return fetch(url, info).then(response => {
-//         if (!response.ok) {
-//             console.log(response);
-//             throw new Error(response.statusText);
-//         }
-//         return response.json().then(data => data as T);
-//     });
-// }
-
-async function api<T>(url: string, info: object): Promise<T> {
-    const response = await fetch(url, info);
-    if (!response.ok) {
-        console.log(response);
-        throw new Error(response.statusText);
-    }
-    const data = await response.json();
-    return data as T;
-}
-
-const createVoteUrl = (id: number, isUpvote: boolean): string => {
-    const voteType = isUpvote ? 'upvote' : 'downvote';
-    return 'https://joke3.p.rapidapi.com/v1/joke/' + id + '/' + voteType;
-};
-
-const createPostInfo = (): object => {
-    return {
-        method: 'POST',
-        headers: {
-            'x-rapidapi-host': 'joke3.p.rapidapi.com',
-            'x-rapidapi-key': 'fc5476beb4mshc57aa5e3ed24365p114d83jsn1e6a83699ef6',
-            'content-type': 'application/x-www-form-urlencoded',
-        },
-        body: {},
-    };
-};
 
 // db09c5d9659d44448c4da0ae5d321e55
 
@@ -89,27 +43,12 @@ const JokeApp: React.FC = () => {
         console.log('change');
     }, [upvotes]);
 
-    const rawFetch = (
-        url: string,
-        info: object,
-        resolve: (arg0: string, arg1: string, arg2: number, arg3: number) => void,
-        reject: (arg0: object) => void,
-        guard?: () => boolean,
-    ): void => {
-        if (guard) {
-            if (guard()) return;
-        }
-        if (isLoading) return;
+    const preFetch = (): void => {
         setLoadding(true);
-        api<{ id: string; content: string; upvotes: number; downvotes: number }>(url, info)
-            .then(({ id, content, upvotes, downvotes }) => {
-                resolve(id, content, upvotes, downvotes);
-                setLoadding(false);
-            })
-            .catch(error => {
-                reject(error);
-                setLoadding(false);
-            });
+    };
+
+    const fetchRandomJokeGuard = (): boolean => {
+        return isLoading;
     };
 
     const setJokeInfo = (id: string, content: string, upvotes: number, downvotes: number): void => {
@@ -121,10 +60,11 @@ const JokeApp: React.FC = () => {
 
     const afterFetchJokeSuccess = (id: string, content: string, upvotes: number, downvotes: number): void => {
         setJokeInfo(id, content, upvotes, downvotes);
+        setLoadding(false);
     };
 
     const fetchData = (): void => {
-        rawFetch(jokeUrl, info, afterFetchJokeSuccess, console.log);
+        getRandomJoke(preFetch, afterFetchJokeSuccess, console.log, fetchRandomJokeGuard);
     };
 
     const isIdNull = (): boolean => {
@@ -133,6 +73,7 @@ const JokeApp: React.FC = () => {
 
     const afterVoteJokeSuccess = (id: string, content: string, upvotes: number, downvotes: number): void => {
         setJokeInfo(id, content, upvotes, downvotes);
+        setLoadding(false);
         setSnackBarOpen(true);
         setSnackBarMsg('vote succeed');
     };
@@ -145,7 +86,8 @@ const JokeApp: React.FC = () => {
     };
 
     const vote = (isUpvote: boolean): void => {
-        rawFetch(createVoteUrl(id, isUpvote), createPostInfo(), afterVoteJokeSuccess, afterVoteJokeFail, isIdNull);
+        // rawFetch(createVoteUrl(id, isUpvote), createPostInfo(), afterVoteJokeSuccess, afterVoteJokeFail, isIdNull);
+        voteJoke(id, isUpvote, preFetch, afterVoteJokeSuccess, afterVoteJokeFail, isIdNull);
     };
 
     const hoverThumbers = (): void => {
@@ -215,48 +157,3 @@ const JokeApp: React.FC = () => {
 };
 
 export default JokeApp;
-
-// import FormGroup from '@material-ui/core/FormGroup';
-// import FormControlLabel from '@material-ui/core/FormControlLabel';
-// import Switch from '@material-ui/core/Switch';
-// import CircularProgress from '@material-ui/core/CircularProgress';
-
-// interface Props {
-//     name: string;
-//     word?: string;
-// }
-
-// const JokeApp = ({ name, word = 'bad' }: Props): JSX.Element => {
-//     return (
-//         <div>
-//             {name} with {word}
-//             <Button variant="contained" color="primary">
-//                 你好，世界
-//             </Button>
-//             <FormGroup>
-//                 <FormControlLabel control={<Switch size="small" />} label="Small" />
-//                 <FormControlLabel control={<Switch />} label="Normal" />
-//             </FormGroup>
-//             <CircularProgress />
-//             <CircularProgress color="secondary" />
-//         </div>
-//     );
-// };
-
-//####################################################################################################
-// const JokeApp: React.FC<{ name: string; word?: string }> = ({ name, word = 'pol' }) => {
-//     return (
-//         <div>
-//             {name} with {word}
-//             <Button variant="contained" color="primary">
-//                 你好，世界
-//             </Button>
-//             <FormGroup>
-//                 <FormControlLabel control={<Switch size="small" />} label="Small" />
-//                 <FormControlLabel control={<Switch />} label="Normal" />
-//             </FormGroup>
-//             <CircularProgress />
-//             <CircularProgress color="secondary" />
-//         </div>
-//     );
-// };
